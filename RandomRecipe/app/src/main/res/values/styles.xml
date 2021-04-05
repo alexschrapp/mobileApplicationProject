@@ -23,12 +23,12 @@
 
     <style name="MyActionBarTitleText"
         parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <!-- ActionBar tabs text -->
     <style name="MyActionBarTabText"
         parent="@style/Widget.AppCompat.ActionBar.TabText">
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 </resources>
