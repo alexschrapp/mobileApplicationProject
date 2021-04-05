@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -21,7 +22,7 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : AppCompatActivity() {
 
     lateinit var toolbar: ActionBar
-    private val TAG: String  = MainActivity::class.java.name
+    private val TAG: String = MainActivity::class.java.name
     private lateinit var auth: FirebaseAuth
     private var currentUser: FirebaseUser? = null
     private lateinit var database: DatabaseReference
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         database = Firebase.database.reference
         auth = Firebase.auth
-        
+
 
         toolbar = supportActionBar!!
         val bottomNavigation: BottomNavigationView = findViewById(R.id.navigationView)
@@ -43,32 +44,35 @@ class MainActivity : AppCompatActivity() {
 
         val homeFragment = HomeFragment.newInstance()
         openFragment(homeFragment)
+
+
     }
 
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_expirytracker -> {
-                toolbar.title = "Expiry Tracker"
-                val songsFragment = ExpiryTrackerFragment.newInstance()
-                openFragment(songsFragment)
-                return@OnNavigationItemSelectedListener true
+    private val mOnNavigationItemSelectedListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_expirytracker -> {
+                    toolbar.title = "Expiry Tracker"
+                    val songsFragment = ExpiryTrackerFragment.newInstance()
+                    openFragment(songsFragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_home -> {
+                    toolbar.title = "Home"
+                    val homeFragment = HomeFragment.newInstance()
+                    openFragment(homeFragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_recipes -> {
+                    toolbar.title = "Recipes"
+                    val recipesFragment = RecipesFragment.newInstance()
+                    openFragment(recipesFragment)
+                    return@OnNavigationItemSelectedListener true
+                }
             }
-            R.id.navigation_home -> {
-                toolbar.title = "Home"
-                val homeFragment = HomeFragment.newInstance()
-                openFragment(homeFragment)
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_recipes -> {
-                toolbar.title = "Recipes"
-                val recipesFragment = RecipesFragment.newInstance()
-                openFragment(recipesFragment)
-                return@OnNavigationItemSelectedListener true
-            }
+            false
         }
-        false
-    }
 
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
@@ -77,18 +81,18 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
     }
 
-    override fun onStart(){
+    override fun onStart() {
         super.onStart()
         currentUser = auth.currentUser
-        if (currentUser== null)loginDialog()
+        if (currentUser == null) loginDialog()
     }
 
-    private fun loginDialog() {
+    fun loginDialog() {
         val builder = AlertDialog.Builder(this)
 
-        with(builder){
+        with(builder) {
             setTitle("Login")
-            val linearLayout:LinearLayout = LinearLayout(this@MainActivity)
+            val linearLayout: LinearLayout = LinearLayout(this@MainActivity)
             linearLayout.orientation = LinearLayout.VERTICAL
 
             val inputEmail: EditText = EditText(this@MainActivity)
@@ -104,32 +108,31 @@ class MainActivity : AppCompatActivity() {
             linearLayout.addView(inputPw)
             builder.setView(linearLayout)
 
-            builder.setPositiveButton("OK"){dialog, which ->
-                login (inputEmail.text.toString(), inputPw.text.toString())
+            builder.setPositiveButton("OK") { dialog, which ->
+                login(inputEmail.text.toString(), inputPw.text.toString())
             }.show()
         }
     }
 
-    fun login(email: String, password: String){
+    fun login(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this){   task ->
-                    if (task.isSuccessful){
-                        Log.d(TAG, "signInWithEmail:success")
-                        Toast.makeText(
-                                baseContext, "Authentification successful",
-                                Toast.LENGTH_SHORT
-                        ).show()
-                        currentUser = auth.currentUser
-                    }else{
-                        Log.w(TAG,"signInWithEmail:failure", task.exception)
-                        Toast.makeText(
-                                baseContext, "Authentification failed",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "signInWithEmail:success")
+                    Toast.makeText(
+                        baseContext, "Authentification successful",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    currentUser = auth.currentUser
+                } else {
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        baseContext, "Authentification failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
-        )
     }
-
-
 }
+
+
