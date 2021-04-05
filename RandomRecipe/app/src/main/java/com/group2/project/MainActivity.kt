@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity() {
         openFragment(homeFragment)
 
 
-    }
 
+    }
 
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -108,12 +108,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showProfile() {
-        val intent = Intent(this, ProfileFragment::class.java)
+        val intent = Intent(this, ProfileFragment::class.java).apply {
+            putExtra("currentUser",currentUser)
+        }
         this?.startActivity(intent)
     }
 
     fun showSettings() {
-        val intent = Intent(this, SettingsFragment::class.java)
+        val intent = Intent(this, SettingsFragment::class.java).apply {
+            putExtra("currentUser",currentUser)
+        }
         this?.startActivity(intent)
     }
 
@@ -144,10 +148,20 @@ class MainActivity : AppCompatActivity() {
             linearLayout.addView(inputPw)
             builder.setView(linearLayout)
 
+            builder.setNegativeButton("Register") { dialog, which ->
+                register()
+            }
+
             builder.setPositiveButton("OK") { dialog, which ->
                 login(inputEmail.text.toString(), inputPw.text.toString())
             }.show()
+
         }
+    }
+
+    fun register() {
+        val intent = Intent(this, registerFragment::class.java)
+        this?.startActivity(intent)
     }
 
     fun login(email: String, password: String) {
