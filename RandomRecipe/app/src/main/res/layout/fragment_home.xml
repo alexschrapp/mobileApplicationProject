@@ -18,18 +18,118 @@
         app:layout_constraintDimensionRatio="w,6:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:text="Expiring Soon"
         android:textSize="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tableLayoutProduct"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@id/button" />
+
+    <TableLayout
+        android:id="@+id/tableLayoutProduct"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight=".5"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="6:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25">
+
+            <TextView
+                android:id="@+id/productNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:layout_margin="0dp"
+                android:gravity="center"
+                android:text="Product Name"/>
+
+            <TextView
+                android:id="@+id/expiryDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:layout_margin="0dp"
+                android:gravity="center"
+                android:text="Expiry Date"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".25">
+
+            <TextView
+                android:id="@+id/item1Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/item1Date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".25">>
+
+            <TextView
+                android:id="@+id/item2Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/item2Date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".25">
+
+            <TextView
+                android:id="@+id/item3Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="Hello" />
+
+            <TextView
+                android:id="@+id/item3Date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="Hello" />
+        </TableRow>
+
+    </TableLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
