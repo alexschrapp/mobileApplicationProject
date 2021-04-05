@@ -1,7 +1,11 @@
 package com.group2.project
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,6 +27,9 @@ class MainActivity : AppCompatActivity() {
 
         toolbar = supportActionBar!!
         val bottomNavigation: BottomNavigationView = findViewById(R.id.navigationView)
+        supportActionBar?.apply {
+            title="Home"
+        }
 
 
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -55,11 +62,41 @@ class MainActivity : AppCompatActivity() {
         false
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_top_bar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
+        R.id.action_profile -> {
+            showProfile()
+            true
+        }
+        R.id.action_settings -> {
+            showSettings()
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    fun showProfile() {
+        val intent = Intent(this, ProfileFragment::class.java)
+        this?.startActivity(intent)
+    }
+
+    fun showSettings() {
+        val intent = Intent(this, SettingsFragment::class.java)
+        this?.startActivity(intent)
     }
 
 }
