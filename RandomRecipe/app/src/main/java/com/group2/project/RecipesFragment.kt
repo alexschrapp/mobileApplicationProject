@@ -1,7 +1,10 @@
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +17,7 @@ import com.google.firebase.ktx.Firebase
 import com.group2.project.MyAdapter
 import com.group2.project.R
 import com.group2.project.RecipeElement
+import com.group2.project.RecipeFragment
 
 
 class RecipesFragment : Fragment() {
@@ -21,6 +25,7 @@ class RecipesFragment : Fragment() {
     private lateinit var database: DatabaseReference
     private lateinit var recipes: ArrayList<RecipeElement>
     private lateinit var rcRecipeList: RecyclerView
+    private lateinit var showMore: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +53,11 @@ class RecipesFragment : Fragment() {
         rcRecipeList = view!!.findViewById(R.id.recipeList)
         database.addValueEventListener(recipeListener)
         rcRecipeList.layoutManager = LinearLayoutManager(context)
-        rcRecipeList.adapter = MyAdapter(recipes)
+        rcRecipeList.adapter = MyAdapter(recipes, context!!)
 
     }
+
+
 
 
     val recipeListener = object : ValueEventListener {
@@ -67,7 +74,7 @@ class RecipesFragment : Fragment() {
                 if(recipesFromFirebase != null){
                     for (i in 0..recipesFromFirebase.size-1){
                         if(recipesFromFirebase.get(i) != null){
-                            val recipe: RecipeElement = RecipeElement.from(recipesFromFirebase.get(i) as HashMap<String, String>)
+                            val recipe: RecipeElement = RecipeElement.from(recipesFromFirebase.get(i) as HashMap<String, Any>)
                             recipes.add(recipe)
                         }
                     }
