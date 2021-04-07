@@ -173,8 +173,6 @@ class MainActivity : AppCompatActivity() {
 
     fun login(email: String, password: String) {
 
-        Log.i(TAG, email)
-        Log.i(TAG, password)
 
         if (email != "" && password != "") {
             auth.signInWithEmailAndPassword(email, password)
