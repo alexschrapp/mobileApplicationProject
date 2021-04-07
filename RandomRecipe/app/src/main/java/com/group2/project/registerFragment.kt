@@ -105,10 +105,9 @@ class registerFragment : AppCompatActivity() {
                         newUser = FirebaseAuth.getInstance().currentUser
                         val User: Users = Users(inputName.text.toString(),
                         inputAge.text.toString(),
-                            inputDiet.getSelectedItem().toString())
+                            inputDiet.getSelectedItem().toString(),
+                        "free")
                         database.child("users").child(FirebaseAuth.getInstance().currentUser.uid).setValue(User)
-
-
                     } else {
                         Toast.makeText(
                             baseContext, "Registration Failed",
@@ -118,8 +117,4 @@ class registerFragment : AppCompatActivity() {
                 }
         }
     }
-
-//    fun databaseWrite(Name: String, Age: String, Diet: String) {
-//
-//    }
 }
