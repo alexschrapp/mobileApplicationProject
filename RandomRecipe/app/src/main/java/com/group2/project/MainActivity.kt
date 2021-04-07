@@ -58,6 +58,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun updateUI() {
+        currentUser != null && currentUser == auth.currentUser
+        val user = null
+    }
+
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -167,23 +172,39 @@ class MainActivity : AppCompatActivity() {
         this?.startActivity(intent)
     }
 
+
+
     fun login(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "signInWithEmail:success")
-                    Toast.makeText(
-                        baseContext, "Authentification successful",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    currentUser = auth.currentUser
-                } else {
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        baseContext, "Authentification failed",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
+        Log.i(TAG, email)
+        Log.i(TAG, password)
+
+        if (email != "" && password != "") {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "signInWithEmail:success")
+                        Toast.makeText(
+                            baseContext, "Authentification successful",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        currentUser = auth.currentUser
+                    } else {
+                        Log.w(TAG, "signInWithEmail:failure", task.exception)
+                        Toast.makeText(
+                            baseContext, "Authentification failed",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
                 }
-            }
+
+        }else{
+            Toast.makeText(
+                baseContext, "Please enter credentials",
+                Toast.LENGTH_SHORT
+            ).show()
+            loginDialog()
+        }
     }
 }
