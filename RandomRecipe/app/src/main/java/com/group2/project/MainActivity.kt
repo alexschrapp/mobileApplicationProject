@@ -58,10 +58,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun updateUI() {
-        currentUser != null && currentUser == auth.currentUser
-        val user = null
-    }
+
 
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
