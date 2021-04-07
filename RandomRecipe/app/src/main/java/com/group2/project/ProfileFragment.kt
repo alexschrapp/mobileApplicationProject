@@ -3,8 +3,10 @@ package com.group2.project
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -73,5 +75,10 @@ class ProfileFragment : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    @SuppressLint("RestrictedApi")
+    fun clickSubscribe(view: View) {
+        Toast.makeText(this, "Subscribe clicked", Toast.LENGTH_SHORT).show()
     }
 }

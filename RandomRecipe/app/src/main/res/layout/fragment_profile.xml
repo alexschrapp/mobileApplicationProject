@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="144dp"
+        android:onClick="clickSubscribe"
         android:text="UPGRADE TO PREMIUM"
         app:layout_constraintBottom_toTopOf="@+id/showEmail"
         app:layout_constraintEnd_toEndOf="parent"
