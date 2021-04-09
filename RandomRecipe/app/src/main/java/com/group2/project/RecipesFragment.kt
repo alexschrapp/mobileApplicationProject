@@ -74,6 +74,7 @@ class RecipesFragment : Fragment() {
                 if(recipesFromFirebase != null){
                     for (i in 0..recipesFromFirebase.size-1){
                         if(recipesFromFirebase.get(i) != null){
+
                             val recipe: RecipeElement = RecipeElement.from(recipesFromFirebase.get(i) as HashMap<String, Any>)
                             recipes.add(recipe)
                         }

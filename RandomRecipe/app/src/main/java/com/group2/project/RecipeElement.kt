@@ -7,6 +7,7 @@ data class RecipeElement(val title: String, val description: String?, val image:
             val summary by map
             val image by map
             val id by map
+            //val instructions by map
 
             val data = RecipeElement(title as String, summary as String, image as String, id as Long)
         }.data
