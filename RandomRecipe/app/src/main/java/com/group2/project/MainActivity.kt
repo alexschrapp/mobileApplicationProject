@@ -135,6 +135,8 @@ class MainActivity : AppCompatActivity() {
     fun loginDialog() {
         val builder = AlertDialog.Builder(this)
 
+        builder.setCancelable(false)
+
         with(builder) {
             setTitle("Login")
             val linearLayout: LinearLayout = LinearLayout(this@MainActivity)
@@ -190,7 +192,7 @@ class MainActivity : AppCompatActivity() {
                             baseContext, "Authentification failed",
                             Toast.LENGTH_SHORT
                         ).show()
-
+                        loginDialog()
                     }
                 }
 
