@@ -1,6 +1,11 @@
 package com.group2.project
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.*
 
-data class RecipeElement(val title: String, val description: String?, val image:String, val id: Long){
+@Parcelize
+data class RecipeElement(val title: String, val description: String?, val image:String, val id: Long) :
+    Parcelable {
     companion object{
         fun from(map: HashMap<String, Any>) = object {
             val title by map

@@ -83,6 +83,7 @@ class  MyAdapter(private val myDataset: ArrayList<RecipeElement>, private val co
     override fun getItemCount() = myDataset.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+
         //holder.message.text = myDataset[position]
         holder.title.text = myDataset.get(position).title
         holder.description.text = myDataset.get(position).description
