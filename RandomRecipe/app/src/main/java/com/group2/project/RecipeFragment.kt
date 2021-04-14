@@ -42,10 +42,11 @@ class RecipeFragment : AppCompatActivity() {
                 val title = item.get("title")
                 val image = item.get("image")
                 val description = item.get("summary")
-                var instructions = ""
-                if(item.get("instructions").toString() != null){
-                    instructions = item.get("instructions").toString()
-                }else{
+
+
+                var instructions = item.get("instructions").toString()
+
+                if (instructions == "null" || instructions == ""){
                     instructions = "No instructions available"
                 }
                 var ingredientsString = ""
@@ -59,6 +60,8 @@ class RecipeFragment : AppCompatActivity() {
                         ingredientsString = ingredientsString + System.getProperty ("line.separator") + lel.toString()
                     }
 
+                }else {
+                    ingredientsString = "No ingredients available"
                 }
 
                 currentRecipeTitle.text = title.toString()
