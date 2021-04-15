@@ -61,7 +61,7 @@ class RecipeFragment : AppCompatActivity() {
                     }
 
                 }else {
-                    ingredientsString = "No ingredients available"
+                    ingredientsString = "No ingredients available "
                 }
 
                 currentRecipeTitle.text = title.toString()
