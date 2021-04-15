@@ -7,50 +7,70 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import kotlin.properties.Delegates
 
 class RecipeFragment : AppCompatActivity() {
 
-
+    private lateinit var database:DatabaseReference
     private lateinit var currentRecipeTitle: TextView
     private lateinit var currentRecipeDescription: TextView
     private lateinit var currentRecipeIngredients: TextView
     private lateinit var currentRecipeInstructions: TextView
     private lateinit var currentRecipeImage: ImageView
-    private var id by Delegates.notNull<Long>()
-    private var title: String? = ""
-    private var ingredients: String? = ""
-    private var description: String? = ""
-    private var instructions: String? = ""
-    private var image: String? = ""
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_recipe)
 
-
-        val currentRecipe = intent.getLongExtra("currentRecipeId", 0)
-        val currentTitle = intent.getStringExtra("currentTitle")
-        val currentImage = intent.getStringExtra("currentImage")
-        val currentDescription = intent.getStringExtra("currentDescription")
-        val currentIngredients = intent.getStringExtra("currentIngredients")
-        val currentInstructions = intent.getStringExtra("currentInstructions")
-        val recipeString = currentRecipe.toString()
-        id = currentRecipe
-        title = currentTitle
-        description= currentDescription
-        ingredients= currentIngredients
-        instructions = currentInstructions
-        image = currentImage
-        Log.d("test", recipeString)
-
+        val id = intent.getStringExtra("id").toString()
         currentRecipeTitle = findViewById(R.id.recipeTitle)
         currentRecipeDescription = findViewById(R.id.recipeDescription)
         currentRecipeIngredients = findViewById(R.id.ingredients)
         currentRecipeInstructions = findViewById(R.id.instructions)
         currentRecipeImage = findViewById(R.id.currentImage)
+
+        database = Firebase.database.reference
+
+        database.child("recipes").child(id).get().addOnSuccessListener {
+            if(it.value != null){
+                val item = it.value as HashMap<String, Any>
+                val title = item.get("title")
+                val image = item.get("image")
+                val description = item.get("summary")
+
+
+                var instructions = item.get("instructions").toString()
+
+                if (instructions == "null" || instructions == ""){
+                    instructions = "No instructions available"
+                }
+                var ingredientsString = ""
+                if(item.get("extendedIngredients").toString() != null){
+                    val ingredients = item.get("extendedIngredients") as ArrayList<Any>
+
+
+                    for(i in ingredients){
+                        val test = i as HashMap<String, Any>
+                        val lel = test.get("originalString")
+                        ingredientsString = ingredientsString + System.getProperty ("line.separator") + lel.toString()
+                    }
+
+                }else {
+                    ingredientsString = "No ingredients available "
+                }
+
+                currentRecipeTitle.text = title.toString()
+                currentRecipeDescription.text = description.toString()
+                currentRecipeInstructions.text = instructions
+                currentRecipeIngredients.text = ingredientsString
+                Picasso.get().load(image.toString()).resize(900, 600).centerCrop().into(currentRecipeImage)
+            }
+        }
 
         supportActionBar?.apply {
             title="Recipe Detail"
@@ -58,12 +78,6 @@ class RecipeFragment : AppCompatActivity() {
             setDisplayShowHomeEnabled(true)
         }
 
-        val currentUser = intent.getParcelableExtra<FirebaseUser>("currentUser")
-        currentRecipeTitle.text = title
-        currentRecipeDescription.text = description
-        currentRecipeIngredients.text = ingredients
-        currentRecipeInstructions.text = instructions
-        Picasso.get().load(image).resize(900, 600).centerCrop().into(currentRecipeImage);
     }
 
     override fun onSupportNavigateUp(): Boolean {

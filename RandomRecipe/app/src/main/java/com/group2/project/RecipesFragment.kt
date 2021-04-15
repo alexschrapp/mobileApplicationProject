@@ -18,6 +18,7 @@ import com.group2.project.MyAdapter
 import com.group2.project.R
 import com.group2.project.RecipeElement
 import com.group2.project.RecipeFragment
+import com.group2.project.Users.Companion.from
 
 
 class RecipesFragment : Fragment() {
@@ -32,7 +33,36 @@ class RecipesFragment : Fragment() {
 
 
         database = Firebase.database.reference
-        recipes = arrayListOf<RecipeElement>()
+        recipes = arrayListOf()
+
+        database.child("recipes").get().addOnSuccessListener {
+            if(it.value != null){
+                val recipesFromDB = it.value as ArrayList<Any>
+                recipes.clear()
+                var key = 0
+                for(item in recipesFromDB){
+
+                    val recipeFromDB = item as HashMap<String, Any>
+                    val title = recipeFromDB.get("title").toString()
+                    val image = recipeFromDB.get("image").toString()
+                    val id = recipeFromDB.get("id").toString().toLong()
+                    val description = recipeFromDB.get("summary").toString()
+                    var instructions = ""
+                    if(recipeFromDB.get("instructions").toString() != null){
+                        instructions = recipeFromDB.get("instructions").toString()
+                    }else{
+                        instructions = "No instructions available"
+                    }
+
+                    val recipe = RecipeElement(title, description, image, key, instructions, "0")
+
+                    recipes.add(recipe)
+                    key += 1
+                }
+                rcRecipeList.adapter?.notifyDataSetChanged()
+            }
+
+        }
 
     }
 
@@ -43,6 +73,7 @@ class RecipesFragment : Fragment() {
     ): View? =
         inflater.inflate(R.layout.fragment_recipes, container, false)
 
+
     companion object {
         fun newInstance(): RecipesFragment = RecipesFragment()
     }
@@ -51,39 +82,10 @@ class RecipesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         rcRecipeList = view!!.findViewById(R.id.recipeList)
-        database.addValueEventListener(recipeListener)
         rcRecipeList.layoutManager = LinearLayoutManager(context)
-        rcRecipeList.adapter = MyAdapter(recipes, context!!)
+        rcRecipeList.adapter = MyAdapter(recipes)
 
     }
 
 
-
-
-    val recipeListener = object : ValueEventListener {
-        override fun onCancelled(error: DatabaseError) {
-            TODO("Not yet implemented")
-        }
-
-        override fun onDataChange(snapshot: DataSnapshot) {
-            if(snapshot.value != null){
-                val recipesFromFirebase =
-                    (snapshot.value as HashMap<*, ArrayList<RecipeElement>>).get("recipes")
-                recipes.clear()
-
-                if(recipesFromFirebase != null){
-                    for (i in 0..recipesFromFirebase.size-1){
-                        if(recipesFromFirebase.get(i) != null){
-
-                            val recipe: RecipeElement = RecipeElement.from(recipesFromFirebase.get(i) as HashMap<String, Any>)
-                            recipes.add(recipe)
-                        }
-                    }
-                }
-
-                rcRecipeList.adapter?.notifyDataSetChanged()
-                rcRecipeList.smoothScrollToPosition(rcRecipeList.adapter!!.itemCount - 1)
-            }
-        }
-    }
 }

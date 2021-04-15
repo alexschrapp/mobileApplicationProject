@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.text.InputType
 import android.util.Log
+import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -203,5 +204,12 @@ class MainActivity : AppCompatActivity() {
             ).show()
             loginDialog()
         }
+    }
+
+    fun seeMore(view: View) {
+        val intent = Intent(this, RecipeFragment::class.java).apply {
+            putExtra("id", view.tag.toString())
+        }
+        startActivity(intent)
     }
 }
