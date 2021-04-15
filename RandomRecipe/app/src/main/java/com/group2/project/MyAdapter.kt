@@ -1,10 +1,6 @@
 package com.group2.project
 
 
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +36,7 @@ class  MyAdapter(
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val titleView:TextView = view.findViewById(R.id.Title)
-        val descriptionView:TextView = view.findViewById(R.id.description)
+        val descriptionView:TextView = view.findViewById(R.id.date)
 
         val imageView:ImageView = view.findViewById(R.id.imageView)
         val button:Button = view.findViewById(R.id.showMore)
