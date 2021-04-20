@@ -3,11 +3,8 @@ package com.group2.project
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 
 
 class  AdapterExpiry(
@@ -33,8 +30,8 @@ class  AdapterExpiry(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = myDataset[position]
-        holder.titleView.text = item.title
-        holder.dateView.text = item.date
+        holder.titleView.text = item.name
+        holder.dateView.text = item.expiryDate
 
     }
 

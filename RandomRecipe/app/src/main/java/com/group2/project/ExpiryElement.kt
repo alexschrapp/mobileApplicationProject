@@ -2,5 +2,5 @@ package com.group2.project
 
 
 
-data class ExpiryElement(val title: String, val date: String){
+data class ExpiryElement(val name: String, val expiryDate: String){
 }
