@@ -22,6 +22,7 @@ class ProfileFragment : AppCompatActivity() {
 
     private lateinit var currentEmail: TextView
     private lateinit var currentName: TextView
+    private lateinit var currentDiet: TextView
     private lateinit var currentAge: TextView
     private lateinit var currentSub: Button
     private lateinit var database: DatabaseReference
@@ -37,6 +38,7 @@ class ProfileFragment : AppCompatActivity() {
         currentName = findViewById(R.id.nameDisplay)
         currentAge = findViewById(R.id.showAge)
         currentSub = findViewById(R.id.premium)
+        currentDiet = findViewById(R.id.dietView)
 
         val currentUser = intent.getParcelableExtra<FirebaseUser>("currentUser")
 
@@ -70,6 +72,13 @@ class ProfileFragment : AppCompatActivity() {
                 isPremium = true
             }
             //currentSub.text = it.value.toString()
+        }.addOnFailureListener{
+            Log.d("IN FAIL LISTENER", "Error getting data", it)
+        }
+
+        database.child("users").child(currentUser!!.uid).child("diet").get().addOnSuccessListener {
+            Log.d("IN SUCCESS LISTENER", "Got value ${it.value}")
+            currentDiet.text = it.value.toString()
         }.addOnFailureListener{
             Log.d("IN FAIL LISTENER", "Error getting data", it)
         }
