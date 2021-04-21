@@ -1,3 +1,4 @@
+package com.group2.project
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -57,23 +58,16 @@ class ExpiryTrackerFragment : Fragment() {
             if (it.value != null) {
                 val expFromDB = it.value as ArrayList<Any>
                 expiry.clear()
+                var id = 0
 
                     for (items in expFromDB){
                         val eFromDB = items as HashMap<String, Any>
                         val title = eFromDB.get("name").toString()
                         val date = eFromDB.get("expiryDate").toString()
-                        val expiryTing = ExpiryElement(title, date)
+                        val expiryTing = ExpiryElement(title, date, id)
 
                         expiry.add(expiryTing)
-                        /*if(expiry.size <1) {
-                            expiry.add(expiryTing)
-                        }else{
-
-                            for (i in 0..expiry.size-1){
-
-                            }
-
-                        }*/
+                        id +=1
                     }
                 expiry.sortBy { it.expiryDate }
 
@@ -120,7 +114,7 @@ class ExpiryTrackerFragment : Fragment() {
     private fun submitToDatabase(){
 
         input = expiryInput.text.toString()
-        val expiryDB:ExpiryElement= ExpiryElement(input, date)
+        val expiryDB:ExpiryElement= ExpiryElement(input, date, 0)
         var expiryPush: ArrayList<ExpiryElement>
         expiryPush = arrayListOf()
 
