@@ -28,7 +28,7 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : AppCompatActivity() {
 
     lateinit var toolbar: ActionBar
-
+    private lateinit var expiry: ArrayList<ExpiryElement>
     private val TAG: String = MainActivity::class.java.name
     private lateinit var auth: FirebaseAuth
     private var currentUser: FirebaseUser? = null
@@ -42,6 +42,33 @@ class MainActivity : AppCompatActivity() {
 
         database = Firebase.database.reference
         auth = Firebase.auth
+        expiry = arrayListOf()
+        currentUser = auth.currentUser
+
+        database.child("expirydata").child(currentUser!!.uid).child("expiryItems").get().addOnSuccessListener {
+            Log.d("test", "${it.value}")
+
+            if (it.value != null) {
+                val expFromDB = it.value as ArrayList<Any>
+                expiry.clear()
+                var id = 0
+
+                for (items in expFromDB){
+                    val eFromDB = items as HashMap<String, Any>
+                    val title = eFromDB.get("name").toString()
+                    val date = eFromDB.get("expiryDate").toString()
+                    val expiryTing = ExpiryElement(title, date, id)
+
+                    expiry.add(expiryTing)
+                    id +=1
+                }
+
+
+            }
+
+
+        }.addOnFailureListener{Log.d("test", "Error")}
+
 
         toolbar = supportActionBar!!
         val bottomNavigation: BottomNavigationView = findViewById(R.id.navigationView)
@@ -207,9 +234,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun seeMore(view: View) {
+        val id = view.tag.toString()
         val intent = Intent(this, RecipeFragment::class.java).apply {
             putExtra("id", view.tag.toString())
         }
         startActivity(intent)
+    }
+
+    fun delete(view: View) {
+
+
+        val id2 = view.tag.toString().toInt()
+        expiry.removeAt(id2)
+
+        database.child("expirydata").child(FirebaseAuth.getInstance().currentUser.uid).child("expiryItems").setValue(expiry)
+        Toast.makeText(
+            this, "Item successfully deleted",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

@@ -58,14 +58,16 @@ class HomeFragment : Fragment() {
             if (it.value != null) {
                 val expFromDB = it.value as ArrayList<Any>
                 expiry.clear()
+                var id = 0
 
                 for (items in expFromDB){
                     val eFromDB = items as HashMap<String, Any>
                     val title = eFromDB.get("name").toString()
                     val date = eFromDB.get("expiryDate").toString()
 
-                    val expiryTing = ExpiryElement(title, date)
+                    val expiryTing = ExpiryElement(title, date, id)
                     expiry.add(expiryTing)
+                    id +=1
                 }
 
                 expiry.sortBy { it.expiryDate }
