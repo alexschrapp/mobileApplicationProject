@@ -133,24 +133,75 @@ class ExpiryTrackerFragment : Fragment() {
                 context, "Expiry date successfully added",
                 Toast.LENGTH_SHORT
             ).show()
+            getNotified()
         }
 
 
 
 
     }
-
     private fun changeDate() {
         var month = datePicker.month.toInt() +1
+
         if(month <10){
             var monthwithzero = "0"+month
             date = datePicker.year.toString() + "-" + monthwithzero.toString()+"-"+ datePicker.dayOfMonth.toString()
+
         }else {
             date = datePicker.year.toString() + "-" + month.toString() + "-" + datePicker.dayOfMonth.toString()
         }
         Log.d("test", date.toString())
         var lel =1
     }
+    private fun getNotified(){
+        database.child("expirydata").child(currentUser!!.uid).child("expiryItems").get().addOnSuccessListener {
+            Log.d("NotificationTest", "${it.value}")
+
+            if (it.value != null) {
+                val expFromDB = it.value as ArrayList<Any>
+                expiry.clear()
+                var id = 0
+
+                for (items in expFromDB){
+                    val eFromDB = items as HashMap<String, Any>
+                    val date = eFromDB.get("expiryDate").toString()
+                }
+
+                if (date.length == 10 || date.length == 9) {
+                    var dateSplit = date
+                    val delimiter1 = "-"
+                    val parts = dateSplit.split(delimiter1).toTypedArray()
+
+                    val today = Calendar.getInstance()
+                    val currentYear = today.get(Calendar.YEAR).toString()
+                    val currentMonth = today.get(Calendar.MONTH).toString()
+                    val currentDay = today.get(Calendar.DAY_OF_MONTH).toString()
+
+
+
+                    if (parts[0].equals(currentYear))  {
+                        Toast.makeText(
+                            context, parts[2],
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        Toast.makeText(
+                            context, currentDay,
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                    }
+
+
+
+                }
+
+
+
+
+        }
+    }
+}
 
 }
 
