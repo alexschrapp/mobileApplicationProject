@@ -20,6 +20,7 @@ class SettingsFragment : AppCompatActivity() {
     private lateinit var curEmail: TextView
     private lateinit var curAge: TextView
     private lateinit var curName: TextView
+    private lateinit var curPassword: TextView
     private lateinit var curSpinner: Spinner
     private lateinit var submitChanges: Button
     private lateinit var spinnerText: Array<String>
@@ -33,6 +34,7 @@ class SettingsFragment : AppCompatActivity() {
         curAge = findViewById(R.id.editAge)
         curSpinner = findViewById(R.id.SettingsSpinner)
         curName = findViewById(R.id.editPersonName)
+        curPassword = findViewById(R.id.passwordEdit)
 
         supportActionBar?.apply {
             title="Settings"
@@ -96,5 +98,16 @@ class SettingsFragment : AppCompatActivity() {
             Toast.makeText(baseContext, "Null is not a valid Age", Toast.LENGTH_SHORT).show()
         }
         database.child("users").child(FirebaseAuth.getInstance().currentUser.uid).child("diet").setValue(curSpinner.getSelectedItem().toString())
+        FirebaseAuth.getInstance().currentUser.updateEmail(curEmail.text.toString())
+        if(curPassword.text.toString() != "") {
+            FirebaseAuth.getInstance().currentUser.updatePassword(curPassword.text.toString()).addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                    Log.d("password", "successful")
+                } else {
+                    Toast.makeText(baseContext,"Error setting password", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
     }
 }
