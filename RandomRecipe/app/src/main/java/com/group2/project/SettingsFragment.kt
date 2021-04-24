@@ -85,5 +85,16 @@ class SettingsFragment : AppCompatActivity() {
         Log.d("Diet:", curSpinner.getSelectedItem().toString())
 
         //IMPLEMENT CHANGING DATA IN THE DATABASE
+        if(curName.text.toString() != "") {
+            database.child("users").child(FirebaseAuth.getInstance().currentUser.uid).child("name").setValue(curName.text.toString())
+        } else {
+            Toast.makeText(baseContext, "Null is not a valid Name", Toast.LENGTH_SHORT).show()
+        }
+        if(curAge.text.toString() != "") {
+            database.child("users").child(FirebaseAuth.getInstance().currentUser.uid).child("age").setValue(curAge.text.toString())
+        } else {
+            Toast.makeText(baseContext, "Null is not a valid Age", Toast.LENGTH_SHORT).show()
+        }
+        database.child("users").child(FirebaseAuth.getInstance().currentUser.uid).child("diet").setValue(curSpinner.getSelectedItem().toString())
     }
 }
