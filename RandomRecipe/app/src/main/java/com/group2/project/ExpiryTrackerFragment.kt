@@ -12,6 +12,7 @@ import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,9 +23,15 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.group2.project.*
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.time.ExperimentalTime
+import kotlin.time.milliseconds
+import kotlin.time.seconds
 
 class ExpiryTrackerFragment : Fragment() {
 
@@ -38,6 +45,7 @@ class ExpiryTrackerFragment : Fragment() {
     private lateinit var expiryButton:Button
     var date = ""
     var input =""
+    var dateMilliSec = 0.0
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +72,8 @@ class ExpiryTrackerFragment : Fragment() {
                         val eFromDB = items as HashMap<String, Any>
                         val title = eFromDB.get("name").toString()
                         val date = eFromDB.get("expiryDate").toString()
-                        val expiryTing = ExpiryElement(title, date, id)
+                        val dateMilli = eFromDB.get("dateMilli").toString().toDouble()
+                        val expiryTing = ExpiryElement(title, date, id, dateMilli)
 
                         expiry.add(expiryTing)
                         id +=1
@@ -86,6 +95,7 @@ class ExpiryTrackerFragment : Fragment() {
         fun newInstance(): ExpiryTrackerFragment = ExpiryTrackerFragment()
     }
 
+    @ExperimentalTime
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -114,7 +124,7 @@ class ExpiryTrackerFragment : Fragment() {
     private fun submitToDatabase(){
 
         input = expiryInput.text.toString()
-        val expiryDB:ExpiryElement= ExpiryElement(input, date, 0)
+        val expiryDB:ExpiryElement= ExpiryElement(input, date, 0, dateMilliSec)
         var expiryPush: ArrayList<ExpiryElement>
         expiryPush = arrayListOf()
 
@@ -140,15 +150,47 @@ class ExpiryTrackerFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    @ExperimentalTime
     private fun changeDate() {
         var month = datePicker.month.toInt() +1
+        var day = datePicker.dayOfMonth.toInt()
+
         if(month <10){
-            var monthwithzero = "0"+month
-            date = datePicker.year.toString() + "-" + monthwithzero.toString()+"-"+ datePicker.dayOfMonth.toString()
+            var monthwithzero = "0" + month
+            if(day <10) {
+
+                var daywithzero = "0"+ day
+                date =
+                    datePicker.year.toString() + "-" + monthwithzero.toString() + "-" + daywithzero.toString()
+            }else{
+                date =
+                    datePicker.year.toString() + "-" + monthwithzero.toString() + "-" + day.toString()
+            }
         }else {
+            if(day <10) {
+
+                var daywithzero = "0"+ day
+                date =
+                    datePicker.year.toString() + "-" + month.toString() + "-" + daywithzero.toString()
+            }
             date = datePicker.year.toString() + "-" + month.toString() + "-" + datePicker.dayOfMonth.toString()
         }
-        Log.d("test", date.toString())
+
+        val realDate = Date(datePicker.year.toString().toInt(), datePicker.month.toInt(), datePicker.dayOfMonth.toInt())
+        val ah = realDate.time
+        dateMilliSec = (ah - 59958144000000).toDouble()
+
+        val fuk = LocalDate.now()
+        val dateee = Date(LocalDate.now().year.toString().toInt(), LocalDate.now().monthValue.toString().toInt(), LocalDate.now().dayOfMonth.toString().toInt())
+        val llall = dateee.time - 59958144000000
+        val test = LocalDateTime.now()
+        Log.d("date", date.toString())
+        Log.d("dateee", realDate.toString())
+
+
+
+
         var lel =1
     }
 
