@@ -31,6 +31,7 @@ class HomeFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
 
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,8 +65,8 @@ class HomeFragment : Fragment() {
                     val eFromDB = items as HashMap<String, Any>
                     val title = eFromDB.get("name").toString()
                     val date = eFromDB.get("expiryDate").toString()
-
-                    val expiryTing = ExpiryElement(title, date, id)
+                    val dateMilli = eFromDB.get("dateMilli").toString().toDouble()
+                    val expiryTing = ExpiryElement(title, date, id, dateMilli)
                     expiry.add(expiryTing)
                     id +=1
                 }
