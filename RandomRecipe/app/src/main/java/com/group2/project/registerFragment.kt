@@ -108,6 +108,7 @@ class registerFragment : AppCompatActivity() {
                             inputDiet.getSelectedItem().toString(),
                         "free")
                         database.child("users").child(FirebaseAuth.getInstance().currentUser.uid).setValue(User)
+                        finish()
                     } else {
                         Toast.makeText(
                             baseContext, "Registration Failed",
