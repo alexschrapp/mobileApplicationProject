@@ -67,6 +67,7 @@ class ExpiryTrackerFragment : Fragment() {
                 val expFromDB = it.value as ArrayList<Any>
                 expiry.clear()
                 var id = 0
+                
 
                     for (items in expFromDB){
                         val eFromDB = items as HashMap<String, Any>
