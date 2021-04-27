@@ -223,46 +223,47 @@ class ExpiryTrackerFragment : Fragment() {
                         LocalDate.now().monthValue.toString().toInt(),
                         LocalDate.now().dayOfMonth.toString().toInt()
                     )
-                    val currentDateMilli = currentDate.time - 59958144000000;
+                    val currentDateMilli = currentDate.time - 59960736000000;
 
                     val fourDaysInMilli = 345600000;
                     val threeDaysInMilli = 259200000;
                     val twoDaysInMilli = 172800000;
                     val oneDayInMilli = 86400000;
+                    val lav = currentDateMilli.toDouble() + oneDayInMilli
 
-
-                    if (dateMilliseconds < currentDateMilli.toDouble() && dateMilliseconds < currentDateMilli.toDouble() + oneDayInMilli) {
+                    if (dateMilliseconds >= currentDateMilli.toDouble() && dateMilliseconds < currentDateMilli.toDouble() + oneDayInMilli) {
                         Toast.makeText(
                             context, "product expires today",
                             Toast.LENGTH_LONG
                         ).show()
                     }
-                    if (dateMilliseconds > currentDateMilli.toDouble() - fourDaysInMilli) {
+                    if (dateMilliseconds >= currentDateMilli.toDouble() + fourDaysInMilli) {
                         Toast.makeText(
                             context, "product is ok",
                             Toast.LENGTH_LONG
                         ).show()
                     }
-                    if (dateMilliseconds  < currentDateMilli.toDouble() - threeDaysInMilli && dateMilliseconds < currentDateMilli.toDouble() + fourDaysInMilli) {
+                    if (dateMilliseconds < currentDateMilli.toDouble() ) {
+                        Toast.makeText(
+                            context, "we forgot something",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    if (dateMilliseconds  >= currentDateMilli.toDouble() + threeDaysInMilli && dateMilliseconds < currentDateMilli.toDouble() + fourDaysInMilli) {
                         Toast.makeText(
                             context, "product expires in 3 days",
                             Toast.LENGTH_LONG
                         ).show()
                     }
-                    if (dateMilliseconds < currentDateMilli.toDouble() - twoDaysInMilli && dateMilliseconds <  currentDateMilli.toDouble() + threeDaysInMilli) {
+                    if (dateMilliseconds >= currentDateMilli.toDouble() + twoDaysInMilli && dateMilliseconds <  currentDateMilli.toDouble() + threeDaysInMilli) {
                         Toast.makeText(
                             context, "product expires in 2 days",
                             Toast.LENGTH_LONG
                         ).show()
                     }
-                    if (dateMilliseconds < currentDateMilli.toDouble() - oneDayInMilli && dateMilliseconds < currentDateMilli.toDouble() + twoDaysInMilli) {
+                    if (dateMilliseconds >= currentDateMilli.toDouble() + oneDayInMilli && dateMilliseconds < currentDateMilli.toDouble() + twoDaysInMilli) {
                         Toast.makeText(
                             context, "product expires tomorrow",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-                        Toast.makeText(
-                            context, "we forgot something",
                             Toast.LENGTH_LONG
                         ).show()
                     }
